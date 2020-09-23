@@ -1,0 +1,18 @@
+---
+version: '3.8'
+
+#################################################################################
+#    For more information on the syntax and features of docker-compose files,   #
+#    see: https://docs.docker.com/compose/compose-file/                         #
+#################################################################################
+
+# Declaration of the network nodes.
+services:
+  envoy:
+    container_name: testbed
+    build: .
+    ports:
+    - "9901:9901"
+    - "10000:10000"
+    #tty: true         # required to keep the container from exiting immediately.
+    #privileged: true  # required so that routing tables can be manipulated.
