@@ -26,6 +26,10 @@ static_resources:
               routes:
               - match: 
                   prefix: "/"
+                  # Using Envoy traffic shifting to route 
+                  # part of the requests to google.com and 
+                  # the other part of requests to bing.com.
+                  # See: https://www.envoyproxy.io/docs/envoy/latest/configuration/http/http_conn_man/traffic_splitting
                   runtime_fraction:
                     default_value:
                       numerator: 50
