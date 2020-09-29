@@ -10,7 +10,7 @@
     <relativePath /> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.equalities.envoy</groupId>
-  <artifactId>Client</artifactId>
+  <artifactId>client</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Client</name>
   <description>A Spring Boot service acting as a client in an Envoy Mesh</description>
@@ -78,6 +78,19 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <!-- For details see: https://docs.spring.io/spring-boot/docs/2.3.0.RELEASE/maven-plugin/reference/html/#build-image -->
+        <executions>
+          <execution>
+            <goals>
+              <goal>build-image</goal>
+            </goals>
+            <configuration>
+              <image>
+                <name>sap.com/${project.artifactId}:${project.version}</name>
+              </image>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>

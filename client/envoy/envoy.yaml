@@ -3,11 +3,11 @@ admin:
   address:
     socket_address: 
       address: 0.0.0.0
-      port_value: 9000
+      port_value: 9001
 
 static_resources:
   listeners:
-  - name: WebTraffic-Egress # for traffic from the client to the server.
+  - name: http_egress # for traffic from the client to the server.
     address:
       socket_address:
         address: 0.0.0.0
@@ -36,7 +36,7 @@ static_resources:
           http_filters:
           - name: envoy.filters.http.router
     
-  - name: WebTraffic-Ingress # for traffic from the server to the client.
+  - name: http_ingress # for traffic from the server to the client.
     address:
       socket_address:
         address: 0.0.0.0
@@ -79,13 +79,13 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: localhost # address of envoy of server
-                port_value: 82     # ingress port of server envoy
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: localhost
+                address: server-envoy # address of server-envoy
+                port_value: 81        # ingress port of server envoy
+    # transport_socket:
+    #   name: envoy.transport_sockets.tls
+    #   typed_config:
+    #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    #     sni: localhost
 
   - name: local
     connect_timeout: 0.25s
@@ -100,11 +100,11 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: localhost # address of client application.
-                port_value: 8001   # port of client application.
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: localhost
+                address: client  # address of client application.
+                port_value: 8001 # port of client application.
+    # transport_socket:
+    #   name: envoy.transport_sockets.tls
+    #   typed_config:
+    #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    #     sni: localhost
 

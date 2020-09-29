@@ -10,12 +10,19 @@ version: '3.8'
 services:
   server-envoy:
     container_name: server-envoy
-    build: .
+    build:
+      context: ./envoy
     ports:
-    - "9001:9001"      # envoy admin port
-    - "82:82"          # envoy ingress port
-    - "83:83"          # envoy egress port
+    - "9002:9001"      # envoy admin port
+    - "83:80"          # envoy egress port
+    - "82:81"          # envoy ingress port
     #tty: true         # required to keep the container from exiting immediately.
     #privileged: true  # required so that routing tables can be manipulated.
     environment:
       - "ENVOY_UID=0"   # Run as root user (necessary since we bind to port 81)
+  
+  server:
+    container_name: server
+    image: sap.com/server:0.0.1-SNAPSHOT
+    ports:
+      - 8002:8002

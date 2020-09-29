@@ -11,7 +11,7 @@ static_resources:
     address:
       socket_address:
         address: 0.0.0.0
-        port_value: 83
+        port_value: 80
     filter_chains:
     - filters:
         # Name must match the qualified name as given here: 
@@ -40,7 +40,7 @@ static_resources:
     address:
       socket_address:
         address: 0.0.0.0
-        port_value: 82
+        port_value: 81
     filter_chains:
     - filters:
         # Name must match the qualified name as given here: 
@@ -79,13 +79,13 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: localhost # address of client envoy
-                port_value: 81     # ingress port of client envoy
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: localhost
+                address: client-envoy # address of client envoy
+                port_value: 81        # ingress port of client envoy
+    # transport_socket:
+    #   name: envoy.transport_sockets.tls
+    #   typed_config:
+    #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    #     sni: localhost
 
   - name: local
     connect_timeout: 0.25s
@@ -100,11 +100,11 @@ static_resources:
         - endpoint:
             address:
               socket_address:
-                address: localhost # address of server application.
-                port_value: 8002   # port of server application
-    transport_socket:
-      name: envoy.transport_sockets.tls
-      typed_config:
-        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-        sni: localhost
+                address: server  # address of server application.
+                port_value: 8002 # port of server application
+    # transport_socket:
+    #   name: envoy.transport_sockets.tls
+    #   typed_config:
+    #     "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+    #     sni: localhost
 

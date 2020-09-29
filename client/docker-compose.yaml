@@ -6,16 +6,24 @@ version: '3.8'
 #    see: https://docs.docker.com/compose/compose-file/                         #
 #################################################################################
 
-# Declaration of the network nodes.
+# Declaration of the network nodes.s
 services:
   client-envoy:
     container_name: client-envoy
-    build: .
+    build: 
+      context: ./envoy
+      network: host
     ports:
-    - "9000:9000"      # envoy admin port
+    - "9001:9001"      # envoy admin port
     - "80:80"          # envoy egress port
     - "81:81"          # envoy ingress port
     #tty: true         # required to keep the container from exiting immediately.
     #privileged: true  # required so that routing tables can be manipulated.
     environment:
       - "ENVOY_UID=0"   # Run as root user (necessary since we bind to port 80)
+
+  client:
+    container_name: client
+    image: sap.com/client:0.0.1-SNAPSHOT
+    ports:
+      - 8001:8001
