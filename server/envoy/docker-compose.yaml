@@ -8,11 +8,11 @@ version: '3.8'
 
 # Declaration of the network nodes.
 services:
-  envoy:
-    container_name: testbed
+  server-envoy:
+    container_name: server-envoy
     build: .
     ports:
     - "9901:9901"
-    - "10000:10000"
+    - "81:81"
     #tty: true         # required to keep the container from exiting immediately.
     #privileged: true  # required so that routing tables can be manipulated.
