@@ -1,21 +1,25 @@
 admin:
   access_log_path: /tmp/admin_access.log
   address:
-    socket_address: { address: 0.0.0.0, port_value: 9901 }
+    socket_address: 
+      address: 0.0.0.0
+      port_value: 9000
 
 static_resources:
   listeners:
-  - name: WebTraffic
+  - name: WebTraffic-Egress # for traffic from the client to the server.
     address:
       socket_address:
         address: 0.0.0.0
         port_value: 80
     filter_chains:
     - filters:
+        # Name must match the qualified name as given here: 
+        # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-msg-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager
       - name: envoy.filters.network.http_connection_manager
         typed_config:
           "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
-          stat_prefix: ingress_http
+          stat_prefix: client_egress_http
           codec_type: AUTO
           route_config:
             name: route-to-server
@@ -29,6 +33,35 @@ static_resources:
                 route:
                   host_rewrite_literal: echo-server
                   cluster: echo-server-cluster
+          http_filters:
+          - name: envoy.filters.http.router
+    
+  - name: WebTraffic-Ingress # for traffic from the server to the client.
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 81
+    filter_chains:
+    - filters:
+        # Name must match the qualified name as given here: 
+        # https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-msg-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager
+      - name: envoy.filters.network.http_connection_manager 
+        typed_config:
+          "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+          stat_prefix: client_ingress_http
+          codec_type: AUTO
+          route_config:
+            name: route-to-client
+            virtual_hosts:
+            - name: echo-client
+              domains: 
+                - "*"
+              routes:
+              - match: 
+                  prefix: "/"
+                route:
+                  host_rewrite_literal: echo-client
+                  cluster: local
           http_filters:
           - name: envoy.filters.http.router
 
@@ -47,9 +80,31 @@ static_resources:
             address:
               socket_address:
                 address: localhost # address of envoy of server
-                port_value: 81     # port of envy of server
+                port_value: 82     # ingress port of server envoy
     transport_socket:
       name: envoy.transport_sockets.tls
       typed_config:
         "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
         sni: localhost
+
+  - name: local
+    connect_timeout: 0.25s
+    type: LOGICAL_DNS
+    # Comment out the following line to test on v6 networks
+    dns_lookup_family: V4_ONLY
+    lb_policy: ROUND_ROBIN
+    load_assignment:
+      cluster_name: local
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: localhost # address of client application.
+                port_value: 8001   # port of client application.
+    transport_socket:
+      name: envoy.transport_sockets.tls
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+        sni: localhost
+

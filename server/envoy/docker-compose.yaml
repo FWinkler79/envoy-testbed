@@ -12,7 +12,10 @@ services:
     container_name: server-envoy
     build: .
     ports:
-    - "9901:9901"
-    - "81:81"
+    - "9001:9001"      # envoy admin port
+    - "82:82"          # envoy ingress port
+    - "83:83"          # envoy egress port
     #tty: true         # required to keep the container from exiting immediately.
     #privileged: true  # required so that routing tables can be manipulated.
+    environment:
+      - "ENVOY_UID=0"   # Run as root user (necessary since we bind to port 81)

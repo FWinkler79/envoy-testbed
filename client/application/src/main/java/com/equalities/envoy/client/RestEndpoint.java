@@ -15,8 +15,14 @@ public class RestEndpoint {
   
   @GetMapping(path = "/send/{message}")
   public String callServer(@PathVariable String message) {
-    log.info("Sending message '{}' to echo endpoint.", message);
+    log.info("Sending message '{}' to server's echo endpoint.", message);
     String echo = echoServiceClient.echo(message);
-    return "Echo: " + echo + "<br>";
-  } 
+    return echo + "<br>";
+  }
+  
+  @GetMapping(path = "/echo/{message}")
+  public String clientEcho(@PathVariable String message) {
+    log.info("Client received message '{}' from server. Echoing back...", message);
+    return "Client says: " + message;
+  }
 }
