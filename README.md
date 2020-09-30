@@ -1,6 +1,29 @@
 # Envoy-Testbed
-Testing Envoy and getting a better understanding.
 
+This branch shows a very simple Envoy setup that includes a traffic shifting scenario.
+
+The setup includes a single Envoy instance that is run from a Docker container and proxies requests from localhost to either Google.com or Bing.com. Based on a traffic shifting configuration in `envoy.yaml` 50% of all outgoing requests are routed to Google.com, the other 50% to Bing.com.
+
+Currently this traffic shifting configuration is statically configured, but when the Envoy management plane APIs (basically REST or gRPC APIs) are used, this information can be adjusted dynamically, allowing gradually shifting an entire user-base from one service version to another.
+
+All configuration is done statically in `envoy.yaml` and injected into the Docker image using a Docker build (see `Dockerfile`).
+Of course, the configuration file could also be mapped into the Docker container, not requiring an explicit Docker image to be built everytime the configuration changes.
+
+# Running the Sample
+
+To run the sample, you need Docker installed. Execute the following steps to get things going:
+
+1. `docker-compose build` - build the Docker image
+2. `docker-compose up -d` - run the Docker container hosting envoy (as a daemon in background)
+3. `docker container ls` - to confirm that the container is up and running.
+
+Once up and running, you can send requests to `http://localhost:10000` and will be proxied to `www.google.com` or `www.bing.com`.
+
+To shut down envoy, use:
+1. `docker-compose down`
+2. `docker container ls` - to confirm that the container is gone.
+
+❗Note: whenever you make changes to `envoy.yaml` you need to rebuild the Docker image using `docker-compose build`!
 
 # References
 
