@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 @FeignClient(name = "Server", url = "http://client-envoy")
 public interface EchoClient {
 
-  @GetMapping(path="/echo/{message}" )
+  @GetMapping(path="/echo/{message}")
   public String echo(@PathVariable String message);
 }
