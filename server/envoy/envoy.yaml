@@ -8,6 +8,7 @@ admin:
 static_resources:
   listeners:
   - name: http_egress # For traffic from the client to the server. Arbitrary, unique name.
+    traffic_direction: OUTBOUND
     address:
       socket_address:
         address: 0.0.0.0
@@ -55,6 +56,7 @@ static_resources:
           - name: envoy.filters.http.router
     
   - name: http_ingress # For traffic from the server to the client. Arbitrary, unique name.
+    traffic_direction: INBOUND
     address:
       socket_address:
         address: 0.0.0.0

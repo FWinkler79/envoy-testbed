@@ -8,6 +8,7 @@ admin:
 static_resources:
   listeners:
   - name: http_egress # for traffic from the client to the server.
+    traffic_direction: OUTBOUND
     address:
       socket_address:
         address: 0.0.0.0
@@ -35,7 +36,7 @@ static_resources:
             #   - match: 
             #       prefix: "/"
             #     route:
-            #       host_rewrite_literal: client
+            #       host_rewrite_literal: clients
             #       cluster: local
 
             # To test HTTP-based routing. Define an 'echo-server' virtual host.
@@ -55,6 +56,7 @@ static_resources:
           - name: envoy.filters.http.router
     
   - name: http_ingress # for traffic from the server to the client.
+    traffic_direction: INBOUND
     address:
       socket_address:
         address: 0.0.0.0
