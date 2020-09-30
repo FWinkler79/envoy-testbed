@@ -37,6 +37,14 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-openfeign</artifactId>
     </dependency>
+    <!-- Dependency to switch HttpClient implementation from java.net.URLConnection to Apache HTTP Client -->
+    <!-- See also: FeignAutoConfiguration for details. -->
+    <!-- See also: https://cloud.spring.io/spring-cloud-commons/reference/html/#http-clients -->
+    <!-- See also: https://cloud.spring.io/spring-cloud-openfeign/reference/html/#spring-cloud-feign-overriding-defaults -->
+    <dependency>
+      <groupId>io.github.openfeign</groupId>
+      <artifactId>feign-httpclient</artifactId>
+    </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
@@ -60,7 +68,7 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
-  
+
   <dependencyManagement>
     <dependencies>
       <dependency>

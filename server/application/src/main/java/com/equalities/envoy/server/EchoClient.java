@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "Client", url = "http://server-envoy")
+@FeignClient(name = "Client", url = "http://echo-client")
 public interface EchoClient {
 
   @GetMapping(path="/echo/{message}")

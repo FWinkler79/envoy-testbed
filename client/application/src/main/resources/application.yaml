@@ -1,12 +1,42 @@
 server:
   port: ${PORT:8001}
 
-spring:
-  cloud:
-    httpclientfactories:
-      apache:
-        enabled: true
+com:
+  equalities:
+    feign:
+      proxy:
+        host:   "client-envoy"
+        port:   80
+        scheme: "http"
 
-feign:
-  httpclient:
-    enabled: true
+# For use of ApacheHttpClient from the
+#   io.github.openfeign:feign-httpclient 
+# dependency, the following values need
+# to be true (which they are by default)
+
+#spring:
+#  cloud:
+#    httpclientfactories:
+#      apache:
+#        enabled: true
+#
+#feign:
+#  httpclient:
+#    enabled: true
+
+##################################################
+
+# For use of OkHttpClient from the
+#   io.github.openfeign:feign-okhttp
+# dependency, the following values need
+# to be true (which they are NOT by default)
+
+#spring:
+#  cloud:
+#    httpclientfactories:
+#      ok:
+#        enabled: true
+#
+#feign:
+#  okhttp:
+#    enabled: true
