@@ -25,19 +25,19 @@ static_resources:
           route_config:
             name: route-to-server
             virtual_hosts:
-            # # To test HTTP-based routing. Define a 'loopback' virtual host.
-            # # If the client sends a request to this Envoy instance with the 'Host' header 
-            # # set to 'loopback' this route will be chosen and the request is redirected
-            # # back to the client itself.
-            # - name: loopback
-            #   domains: 
-            #     - "loopback"
-            #   routes:
-            #   - match: 
-            #       prefix: "/"
-            #     route:
-            #       host_rewrite_literal: clients
-            #       cluster: local
+            # To test HTTP-based routing. Define a 'loopback' virtual host.
+            # If the client sends a request to this Envoy instance with the 'Host' header 
+            # set to 'loopback' this route will be chosen and the request is redirected
+            # back to the client itself.
+            - name: loopback
+              domains: 
+                - "loopback"
+              routes:
+              - match: 
+                  prefix: "/"
+                route:
+                  host_rewrite_literal: clients
+                  cluster: local
 
             # To test HTTP-based routing. Define an 'echo-server' virtual host.
             # If the client sends a request to this Envoy instance with the 'Host' header 
