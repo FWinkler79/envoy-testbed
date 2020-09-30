@@ -43,14 +43,14 @@ static_resources:
             # If the server sends a request to this Envoy instance with the 'Host' header 
             # set to 'envoy-client' this route will be chosen and the request is forwarded 
             # to the 'echo-client-cluster' defined below.
-            - name: echo-client
+            - name: client        # This is just the name of the route. It has nothing to do with matching the request host.
               domains: 
-                - "*"
+                - "echo-client"   # This is important, as this domain is matched against the Host header of the proxied request.
               routes:
               - match: 
                   prefix: "/"
                 route:
-                  host_rewrite_literal: echo-client
+                  host_rewrite_literal: client
                   cluster: echo-client-cluster
           http_filters:
           - name: envoy.filters.http.router
@@ -73,14 +73,14 @@ static_resources:
           route_config:
             name: route-to-server
             virtual_hosts:
-            - name: echo-server
+            - name: server
               domains: 
                 - "*"
               routes:
               - match: 
                   prefix: "/"
                 route:
-                  host_rewrite_literal: echo-server
+                  host_rewrite_literal: server
                   cluster: local
           http_filters:
           - name: envoy.filters.http.router

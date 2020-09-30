@@ -30,7 +30,7 @@ stopLandscape.sh  # script to stop and remove all components using docker-compos
   |- envoy        # server Envoy proxy
 ```
 
-Both Spring Boot applications are built using Maven and generate a Docker image named `sap.com/client:1.0.0-SNAPSHOT` and `sap.com/server:1.0.0-SNAPSHOT` respectively.
+Both Spring Boot applications are built using Maven and generate a Docker image named `sap.com/client:0.0.1-SNAPSHOT` and `sap.com/server:0.0.1-SNAPSHOT` respectively.
 
 Both `client` and `server` contain a separate `docker-compose.yaml` file to bring up the Spring Boot application and Envoy proxy sidecar. 
 

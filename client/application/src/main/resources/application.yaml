@@ -1,2 +1,12 @@
 server:
   port: ${PORT:8001}
+
+spring:
+  cloud:
+    httpclientfactories:
+      apache:
+        enabled: true
+
+feign:
+  httpclient:
+    enabled: true
