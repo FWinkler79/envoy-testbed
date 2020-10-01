@@ -12,7 +12,6 @@ services:
     container_name: client-envoy
     build: 
       context: ./envoy
-      network: host
     ports:
     - "9001:9001"      # envoy admin port
     - "80:80"          # envoy egress port

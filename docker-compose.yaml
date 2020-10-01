@@ -20,18 +20,23 @@ services:
     #privileged: true  # required so that routing tables can be manipulated.
     environment:
       - "ENVOY_UID=0"   # Run as root user (necessary since we bind to port 81)
+    networks:
+      envoy-sample-network:
+        aliases: 
+          - echo-client
   
   server:
     container_name: server
     image: sap.com/server:0.0.1-SNAPSHOT
     ports:
       - 8002:8002
+    networks:
+      envoy-sample-network:
 
   client-envoy:
     container_name: client-envoy
     build: 
       context: ./client/envoy
-      network: host
     ports:
     - "9001:9001"      # envoy admin port
     - "80:80"          # envoy egress port
@@ -40,9 +45,18 @@ services:
     #privileged: true  # required so that routing tables can be manipulated.
     environment:
       - "ENVOY_UID=0"   # Run as root user (necessary since we bind to port 80)
+    networks:
+      envoy-sample-network:
+        aliases: 
+          - echo-server
 
   client:
     container_name: client
     image: sap.com/client:0.0.1-SNAPSHOT
     ports:
       - 8001:8001
+    networks:
+      envoy-sample-network:
+
+networks:
+  envoy-sample-network:
