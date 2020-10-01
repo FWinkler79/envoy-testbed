@@ -107,6 +107,11 @@ DNS can only resolve host names, but it has no notion of the ports an applicatio
 
 So Istio.io must use another mechanism than the one described above to keep the proxies transparent to the applications and at the same time overcome the port limitation described before.
 
+It appears that Istio.io uses `iptables` instead. `iptables` is an administration tool for packet filtering and NAT.
+It can be used to route / forward traffic based on IP addresses, including ports. In short, `iptables` can route all traffic from within a (pod) network to a specific gateway (e.g. an Envoy proxy), including port forwarding.
+
+This is described in detail [here](https://jimmysong.io/en/blog/sidecar-injection-iptables-and-traffic-routing/).
+
 # References
 
 **Envoy**
@@ -133,3 +138,7 @@ So Istio.io must use another mechanism than the one described above to keep the 
 * [FeignAutoConfiguration Class](https://github.com/spring-cloud/spring-cloud-openfeign/blob/master/spring-cloud-openfeign-core/src/main/java/org/springframework/cloud/openfeign/FeignAutoConfiguration.java)
 * [OpenFeign HTTP Client (Apache HTTP Client-based)](https://mvnrepository.com/artifact/io.github.openfeign/feign-httpclient/9.3.1)
 * [OpenFeign HTTP Client (OkHttp Client-based)](https://mvnrepository.com/artifact/io.github.openfeign/feign-okhttp/9.2.0)
+
+**Istio.io**
+
+* [How Istio does side-car injection and traffic hi-jacking](https://jimmysong.io/en/blog/sidecar-injection-iptables-and-traffic-routing/)
