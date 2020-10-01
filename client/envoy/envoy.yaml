@@ -36,7 +36,7 @@ static_resources:
               - match: 
                   prefix: "/"
                 route:
-                  host_rewrite_literal: clients
+                  host_rewrite_literal: client
                   cluster: local
 
             # To test HTTP-based routing. Define an 'echo-server' virtual host.
