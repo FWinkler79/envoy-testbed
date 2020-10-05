@@ -1,5 +1,15 @@
 # Envoy-Testbed
 
+This repo consists of several branches. Each of them add some new features to its predecessor.
+
+Here is a summary of all the branches:
+
+| Branch Name           | Description |
+|-----------------------|-------------|
+| master                | A simple setup with an Envoy configured and running locally as a proxy. You can use your browser to send requests to Envoy and Envoy will proxy them on to either Google.com or Bing.com. This sample shows a rudimentary configuration of Envoy that also includes the basic configs for traffic shaping. |
+| [envoy-spring](https://github.com/FWinkler79/envoy-testbed/tree/envoy-spring) | A more advanced setup with two Spring Boot applications that communicate with each other via Envoy instances. The two Spring Boot apps use Spring Cloud OpenFeign REST client. The setup includes an HTTP proxy configuration for both Spring Boot apps so that OpenFeign sends request to Envoy proxy rather than the original destination. This allows the use of logical service names (that can actually **not** be resolved on the network) but requires an explicit proxy configuration in the applications themselves. In other words: in this setup Envoy is **not** transparent to the applications. |
+| [envoy-spring-no-proxy](https://github.com/FWinkler79/envoy-testbed/tree/envoy-spring-no-proxy) | An even more advanced setup using Docker networking to expose the logical service names as DNS names on the network, pointing to Envoy proxy. This allows the applications to communicate with each other via Envoy proxy instances, without having to configure an HTTP proxy in the applications themselves. In other words: in this setup, Envoy proxy is **transparent** to the applications. Though not exactly the way Istio.io does it (which uses iptables to change the routing rules to hi-jack all traffic and send it to Envoy) it shows the magic Istio.io introduces in a simple example setup. |
+
 This branch shows a very simple Envoy setup that includes a traffic shifting scenario.
 
 The setup includes a single Envoy instance that is run from a Docker container and proxies requests from localhost to either Google.com or Bing.com. Based on a traffic shifting configuration in `envoy.yaml` 50% of all outgoing requests are routed to Google.com, the other 50% to Bing.com.
